@@ -25,7 +25,7 @@ A production-ready Node.js backend built with Express.js, featuring JWT authenti
 
 ```bash
 # Clone the repository
-git clone https://github.com/RahulProgX404/Nodejs-Starter-Kit.git
+git clone https://github.com/RahulProgX404/Inventory-Management-System-Nodejs.git
 cd node-auth
 
 # Copy environment variables
