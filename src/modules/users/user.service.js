@@ -7,16 +7,7 @@ import { signJWT } from "../../middlewares/jwt.middleware.js";
 
 export const userService = {
   async register(registerData) {
-    const { name, email, password, confirmPassword } = registerData;
-
-    // Validate input
-    if (!name || !email || !password || !confirmPassword) {
-      throw new AppError("All fields are required", StatusCodes.BAD_REQUEST);
-    }
-
-    if (password !== confirmPassword) {
-      throw new AppError("Passwords do not match", StatusCodes.BAD_REQUEST);
-    }
+    const { name, email, password } = registerData;
 
     if (password.length < 6) {
       throw new AppError("Password must be at least 6 characters", StatusCodes.BAD_REQUEST);
@@ -56,11 +47,6 @@ export const userService = {
 
   async login(loginData) {
     const { email, password } = loginData;
-
-    // Validate input
-    if (!email || !password) {
-      throw new AppError("Email and password are required", StatusCodes.BAD_REQUEST);
-    }
 
     // Find user
     const user = await User.findOne({ email });

@@ -4,13 +4,13 @@ import { asyncHandler } from "../../utils/async-handler.js";
 import { userService } from "./user.service.js";
 
 export const register = asyncHandler(async (req, res) => {
-  const result = await userService.register(req.body);
+  const result = await userService.register(req.validatedData);
 
   res.success(result, "User registered successfully", StatusCodes.CREATED);
 });
 
 export const login = asyncHandler(async (req, res) => {
-  const result = await userService.login(req.body);
+  const result = await userService.login(req.validatedData);
 
   res.success(result, "Login successful", StatusCodes.OK);
 });
