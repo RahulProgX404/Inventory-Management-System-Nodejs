@@ -23,7 +23,7 @@ export function createApp() {
   // MIDDLEWARE: Security headers
   app.use(helmet());
 
-  // MIDDLEWARE: CORS
+  // MIDDLEWARE: CORS - Allow frontend access
   app.use(
     cors({
       origin: env.CORS_ORIGIN,

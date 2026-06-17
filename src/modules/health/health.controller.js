@@ -6,7 +6,7 @@ import { asyncHandler } from "../../utils/async-handler.js";
 export const healthCheck = asyncHandler((_req, res) => {
   res.success(
     {
-      status: "healthy",
+      status: "Inventory API is running",
       environment: env.NODE_ENV,
       uptime: process.uptime(),
       timestamp: new Date().toISOString(),
@@ -15,3 +15,5 @@ export const healthCheck = asyncHandler((_req, res) => {
     StatusCodes.OK
   );
 });
+
+//throw new AppError("User not found", StatusCodes.NOT_FOUND);

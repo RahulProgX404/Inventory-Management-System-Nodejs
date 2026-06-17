@@ -12,11 +12,11 @@ async function startServer() {
   await connectDatabase();
 
   server.listen(env.PORT, () => {
-    logger.info({ port: env.PORT, environment: env.NODE_ENV, message: "HTTP server started" });
+    logger.info({ port: env.PORT, environment: env.NODE_ENV, message: "🚀 HTTP server started" });
   });
 
   const shutdown = (signal) => {
-    logger.info({ signal, message: "Shutting down HTTP server" });
+    logger.info({ signal, message: "🛑 Shutting down HTTP server" });
 
     server.close(() => {
       logger.info("HTTP server closed");
