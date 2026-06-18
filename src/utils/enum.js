@@ -1,14 +1,19 @@
 export const UserRole = {
   ADMIN: "admin",
-  MANAGER: "manager",
+  STAFF: "staff",
   USER: "user",
   GUEST: "guest",
 };
 
+import { makePermissions } from "./permissions.js";
+
+const categoriesPerms = makePermissions("categories");
+
 export const RolePermissions = {
-  [UserRole.ADMIN]: ["create", "read", "update", "delete"],
-  [UserRole.MANAGER]: ["create", "read", "update"],
-  [UserRole.USER]: ["read"],
+  // Namespaced permissions are generated programmatically per resource
+  [UserRole.ADMIN]: [...categoriesPerms],
+  [UserRole.STAFF]: [...categoriesPerms.filter((p) => !p.endsWith(".delete"))],
+  [UserRole.USER]: [...categoriesPerms.filter((p) => p.endsWith(".read"))],
   [UserRole.GUEST]: [],
 };
 

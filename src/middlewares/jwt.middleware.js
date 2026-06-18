@@ -1,8 +1,6 @@
-import jwt from "jsonwebtoken";
 import { StatusCodes } from "http-status-codes";
-
-import env from "../config/env.js";
 import { AppError } from "../utils/app-error.js";
+import { verifyJwtToken } from "../utils/jwt.js";
 
 export function verifyJWT(req, res, next) {
   const token = req.headers.authorization?.split(" ")[1];
@@ -12,14 +10,10 @@ export function verifyJWT(req, res, next) {
   }
 
   try {
-    const decoded = jwt.verify(token, env.JWT_SECRET);
+    const decoded = verifyJwtToken(token);
     req.user = decoded;
     next();
   } catch (error) {
     throw new AppError("Unauthorized: Invalid token", StatusCodes.UNAUTHORIZED);
   }
-}
-
-export function signJWT(payload, expiresIn = "7d") {
-  return jwt.sign(payload, env.JWT_SECRET, { expiresIn });
 }

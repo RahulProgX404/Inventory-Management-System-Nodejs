@@ -3,7 +3,7 @@ import { StatusCodes } from "http-status-codes";
 import User from "./user.model.js";
 import { AppError } from "../../utils/app-error.js";
 import { hashPassword, comparePassword } from "../../utils/crypto.js";
-import { signJWT } from "../../middlewares/jwt.middleware.js";
+import { createAccessToken, createRefreshToken } from "../../utils/jwt.js";
 
 export const userService = {
   async register(registerData) {
@@ -27,8 +27,13 @@ export const userService = {
       password: hashedPassword,
     });
 
-    // Generate token
-    const token = signJWT({
+    // Generate tokens
+    const accessToken = createAccessToken({
+      userId: user._id,
+      email: user.email,
+      role: user.role,
+    });
+    const refreshToken = createRefreshToken({
       userId: user._id,
       email: user.email,
       role: user.role,
@@ -41,7 +46,8 @@ export const userService = {
         email: user.email,
         role: user.role,
       },
-      token,
+      accessToken,
+      refreshToken,
     };
   },
 
@@ -60,8 +66,13 @@ export const userService = {
       throw new AppError("Invalid email or password", StatusCodes.UNAUTHORIZED);
     }
 
-    // Generate token
-    const token = signJWT({
+    // Generate tokens
+    const accessToken = createAccessToken({
+      userId: user._id,
+      email: user.email,
+      role: user.role,
+    });
+    const refreshToken = createRefreshToken({
       userId: user._id,
       email: user.email,
       role: user.role,
@@ -74,7 +85,8 @@ export const userService = {
         email: user.email,
         role: user.role,
       },
-      token,
+      accessToken,
+      refreshToken,
     };
   },
 

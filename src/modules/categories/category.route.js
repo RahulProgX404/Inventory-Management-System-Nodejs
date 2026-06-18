@@ -8,12 +8,26 @@ import {
   getCategory,
   updateCategory,
 } from "./category.controller.js";
+import { enforceAuthorization } from "../../utils/helper.js";
 
 export const categoryRouter = Router();
 
-categoryRouter.post("/", validateRequest(createCategorySchema), createCategory);
-categoryRouter.get("/", getCategories);
+categoryRouter.post(
+  "/",
+  enforceAuthorization(["admin", "staff"], ["categories.create"]),
+  validateRequest(createCategorySchema),
+  createCategory
+);
 
-categoryRouter.get("/:id", getCategory);
-categoryRouter.patch("/:id", validateRequest(updateCategorySchema), updateCategory);
-categoryRouter.delete("/:id", deleteCategory);
+categoryRouter.get("/", ...enforceAuthorization([], ["categories.read"]), getCategories);
+
+categoryRouter.get("/:id", ...enforceAuthorization([], ["categories.read"]), getCategory);
+
+categoryRouter.patch(
+  "/:id",
+  ...enforceAuthorization([], ["categories.update"]),
+  validateRequest(updateCategorySchema),
+  updateCategory
+);
+
+categoryRouter.delete("/:id", ...enforceAuthorization([], ["categories.delete"]), deleteCategory);

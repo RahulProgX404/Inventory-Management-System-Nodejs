@@ -19,6 +19,8 @@ const envSchema = z.object({
   RATE_LIMIT_MAX: z.string().optional().pipe(z.coerce.number().int().positive()).default("100"),
   LOG_LEVEL: z.enum(["debug", "info", "warn", "error", "trace", "fatal"]).default("info"),
   JWT_SECRET: z.string().min(32, "JWT_SECRET must be at least 32 characters"),
+  JWT_EXPIRY: z.string().default("7d"),
+  REFRESH_TOKEN_EXPIRY: z.string().default("30d"),
 
   MONGODB_URI: z.string(),
 });
