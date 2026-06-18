@@ -11,3 +11,11 @@ export const RolePermissions = {
   [UserRole.USER]: ["read"],
   [UserRole.GUEST]: [],
 };
+
+export const SalesStatus = {
+  PENDING: "PENDING",
+  CONFIRMED: "CONFIRMED",
+  SHIPPED: "SHIPPED",
+  DELIVERED: "DELIVERED",
+  CANCELLED: "CANCELLED",
+};
