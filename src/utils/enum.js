@@ -17,7 +17,7 @@ export const RolePermissions = {
   [UserRole.GUEST]: [],
 };
 
-export const SalesStatus = {
+export const SalesOrderStatus = {
   PENDING: "PENDING",
   CONFIRMED: "CONFIRMED",
   SHIPPED: "SHIPPED",

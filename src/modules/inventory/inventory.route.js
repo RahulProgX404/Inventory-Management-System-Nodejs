@@ -9,7 +9,7 @@ import {
   getLowStockProducts,
   getHistory,
 } from "./inventory.controller.js";
-import { enforceAuthorization } from "../../utils/helper.js";
+import { enforceAuthorization } from "../../utils/permissions.js";
 
 export const inventoryRouter = Router();
 

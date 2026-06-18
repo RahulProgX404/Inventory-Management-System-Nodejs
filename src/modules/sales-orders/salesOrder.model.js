@@ -1,13 +1,13 @@
 import mongoose from "mongoose";
-import { SalesStatus } from "../../utils/enum";
+import { SalesOrderStatus } from "../../utils/enum";
 
 const salesOrderSchema = new mongoose.Schema(
   {
     customerName: String,
     status: {
       type: String,
-      enum: Object.values(SalesStatus),
-      default: SalesStatus.PENDING,
+      enum: Object.values(SalesOrderStatus),
+      default: SalesOrderStatus.PENDING,
     },
     items: [
       {

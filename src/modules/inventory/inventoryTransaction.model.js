@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { TransactionStatus } from "../../utils/enum";
+import { TransactionStatus } from "../../utils/enum.js";
 
 const inventoryTransactionSchema = new mongoose.Schema(
   {

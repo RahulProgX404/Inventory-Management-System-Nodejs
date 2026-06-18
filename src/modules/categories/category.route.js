@@ -8,7 +8,7 @@ import {
   getCategory,
   updateCategory,
 } from "./category.controller.js";
-import { enforceAuthorization } from "../../utils/helper.js";
+import { enforceAuthorization } from "../../utils/permissions.js";
 
 export const categoryRouter = Router();
 
