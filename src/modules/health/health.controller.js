@@ -15,5 +15,3 @@ export const healthCheck = asyncHandler((_req, res) => {
     StatusCodes.OK
   );
 });
-
-//throw new AppError("User not found", StatusCodes.NOT_FOUND);

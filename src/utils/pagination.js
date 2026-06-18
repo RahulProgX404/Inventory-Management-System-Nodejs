@@ -6,14 +6,14 @@ export function paginate(page = 1, limit = 10) {
   return { page: pageNum, limit: limitNum, skip };
 }
 
-export function formatPaginatedResponse(data, total, page, limit) {
+export function formatPaginatedResponse(items, total, page, limit) {
   return {
-    data,
-    pagination: {
+    items,
+    meta: {
       total,
       page,
       limit,
-      pages: Math.ceil(total / limit),
+      totalPages: Math.ceil(total / limit),
     },
   };
 }
