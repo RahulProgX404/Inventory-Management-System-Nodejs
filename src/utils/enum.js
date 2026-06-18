@@ -19,3 +19,17 @@ export const SalesStatus = {
   DELIVERED: "DELIVERED",
   CANCELLED: "CANCELLED",
 };
+
+export const PurchaseStatus = {
+  DRAFT: "DRAFT",
+  PENDING: "PENDING",
+  RECEIVED: "RECEIVED",
+  CANCELLED: "CANCELLED",
+};
+
+export const TransactionStatus = {
+  IN: "IN",
+  OUT: "OUT",
+  ADJUSTMENT: "ADJUSTMENT",
+  TRANSFER: "TRANSFER",
+};
