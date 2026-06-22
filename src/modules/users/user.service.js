@@ -6,6 +6,8 @@ import { AppError } from "../../utils/app-error.js";
 import { hashPassword, comparePassword, generateTokenPair } from "../../utils/crypto.js";
 import { createAccessToken, createRefreshToken } from "../../utils/jwt.js";
 import { paginate, formatPaginatedResponse } from "../../utils/pagination.js";
+import { auditLogService } from "../audit-logs/auditLog.service.js";
+import { AuditAction } from "../../utils/enum.js";
 
 function buildTokenPayload(user) {
   return { userId: user.id, email: user.email, role: user.role };
@@ -37,7 +39,14 @@ export const userService = {
       password: hashedPassword,
     });
 
-    // TODO: save the user creation record in audit logs
+    // save the user creation record in audit logs
+    await auditLogService.record({
+      userId: user._id,
+      action: AuditAction.CREATE,
+      entityType: "User",
+      entityId: user._id,
+      newData: { name: user.name, email: user.email, role: user.role },
+    });
 
     // Generate tokens
     const payload = buildTokenPayload(user);
@@ -91,7 +100,14 @@ export const userService = {
     user.lastLoginAt = new Date();
     await user.save();
 
-    // TODO: save login record in audit logs
+    // save login record in audit logs
+    await auditLogService.record({
+      userid: user._id,
+      action: AuditAction.LOGIN,
+      entityType: "User",
+      entityId: user._id,
+      newData: { loginAt: user.lastLoginAt },
+    });
 
     const refreshToken = createRefreshToken({
       ...payload,
@@ -246,7 +262,13 @@ export const userService = {
     const user = await User.findByIdAndDelete(id);
     if (!user) throw new AppError("User not found", StatusCodes.NOT_FOUND);
 
-    // TODO: save delete record to the audit log
+    // save delete record to the audit log
+    await auditLogService.record({
+      userId: requesterId,
+      action: AuditAction.DELETE,
+      entityType: "User",
+      entityId: user._id,
+    });
 
     return user;
   },
