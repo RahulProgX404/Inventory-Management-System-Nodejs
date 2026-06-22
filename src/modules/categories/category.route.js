@@ -9,6 +9,7 @@ import {
   updateCategory,
 } from "./category.controller.js";
 import { enforceAuthorization } from "../../utils/permissions.js";
+import { validateObjectId } from "../../utils/validation.js";
 
 export const categoryRouter = Router();
 
@@ -26,8 +27,14 @@ categoryRouter.get("/:id", ...enforceAuthorization([], ["categories.read"]), get
 categoryRouter.patch(
   "/:id",
   ...enforceAuthorization([], ["categories.update"]),
+  validateObjectId("id"),
   validateRequest(updateCategorySchema),
   updateCategory
 );
 
-categoryRouter.delete("/:id", ...enforceAuthorization([], ["categories.delete"]), deleteCategory);
+categoryRouter.delete(
+  "/:id",
+  ...enforceAuthorization([], ["categories.delete"]),
+  validateObjectId("id"),
+  deleteCategory
+);

@@ -18,11 +18,15 @@ export const getCategory = asyncHandler(async (req, res) => {
 });
 
 export const updateCategory = asyncHandler(async (req, res) => {
-  const updatedCategory = await categoryService.update(req.params.id, req.validatedData);
+  const updatedCategory = await categoryService.update(
+    req.params.id,
+    req.validatedData,
+    req.user?.userId
+  );
   return res.success(updatedCategory, "Category updated successfully", StatusCodes.OK);
 });
 
 export const deleteCategory = asyncHandler(async (req, res) => {
-  await categoryService.deleteById(req.params.id);
+  await categoryService.deleteById(req.params.id, req.user?.userId);
   return res.success(null, "Category deleted successfully", StatusCodes.OK);
 });

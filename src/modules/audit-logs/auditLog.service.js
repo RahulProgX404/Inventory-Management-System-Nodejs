@@ -1,6 +1,6 @@
-import AuditLog from "./auditLog.model";
+import AuditLog from "./auditLog.model.js";
 import logger from "../../config/logger.js";
-import { paginate, formatPaginateResponse } from "../../utils/pagination.js";
+import { paginate, formatPaginatedResponse } from "../../utils/pagination.js";
 
 export const auditLogService = {
   async record({ userId, action, entityType, entityId, oldData, newData }) {
@@ -33,6 +33,6 @@ export const auditLogService = {
       AuditLog.countDocuments(filter),
     ]);
 
-    return formatPaginateResponse(data, total, page, limit);
+    return formatPaginatedResponse(data, total, page, limit);
   },
 };
