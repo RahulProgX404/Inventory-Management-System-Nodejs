@@ -1,3 +1,5 @@
+import { makePermissions } from "./permissions.js";
+
 export const UserRole = {
   ADMIN: "admin",
   STAFF: "staff",
@@ -5,15 +7,46 @@ export const UserRole = {
   GUEST: "guest",
 };
 
-import { makePermissions } from "./permissions.js";
-
 const categoriesPerms = makePermissions("categories");
+const inventoryPerms = makePermissions("inventory");
+const productsPerms = makePermissions("products");
+const supplierPerms = makePermissions("supplier");
+const warehousePerms = makePermissions("warehouse");
+const purchaseOrdersPerms = makePermissions("purchase-orders");
+const salesOrdersPerms = makePermissions("sales-orders");
+const auditLogsPerms = makePermissions("audit-logs", ["read"]);
+const reportsPerms = makePermissions("reports", ["read"]);
+const usersPerms = makePermissions("users", ["read"]);
+
+const allPerms = [
+  ...categoriesPerms,
+  ...inventoryPerms,
+  ...productsPerms,
+  ...supplierPerms,
+  ...warehousePerms,
+  ...purchaseOrdersPerms,
+  ...salesOrdersPerms,
+  ...auditLogsPerms,
+  ...reportsPerms,
+  ...usersPerms,
+];
+
+const staffPerms = allPerms.filter(
+  (perms) =>
+    !perms.endsWith(".delete") && !perms.startsWith("users.") && !perms.startsWith("audit-logs.")
+);
+
+const userPerms = [
+  ...categoriesPerms.filter((perms) => perms.endsWith(".read")),
+  ...productsPerms.filter((perms) => perms.endsWith(".read")),
+  ...inventoryPerms.filter((perms) => perms.endsWith(".read")),
+];
 
 export const RolePermissions = {
   // Namespaced permissions are generated programmatically per resource
-  [UserRole.ADMIN]: [...categoriesPerms],
-  [UserRole.STAFF]: [...categoriesPerms.filter((p) => !p.endsWith(".delete"))],
-  [UserRole.USER]: [...categoriesPerms.filter((p) => p.endsWith(".read"))],
+  [UserRole.ADMIN]: allPerms,
+  [UserRole.STAFF]: staffPerms,
+  [UserRole.USER]: userPerms,
   [UserRole.GUEST]: [],
 };
 
@@ -37,4 +70,14 @@ export const TransactionStatus = {
   OUT: "OUT",
   ADJUSTMENT: "ADJUSTMENT",
   TRANSFER: "TRANSFER",
+};
+
+export const AuditAction = {
+  CREATE: "CREATE",
+  UPDATE: "UPDATE",
+  DELETE: "DELETE",
+  LOGIN: "LOGIN",
+  STOCK_IN: "STOCK_IN",
+  STOCK_OUT: "STOCK_OUT",
+  STOCK_ADJUST: "STOCK_ADJUST",
 };

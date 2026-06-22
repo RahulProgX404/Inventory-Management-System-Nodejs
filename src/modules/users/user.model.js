@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 import { UserRole } from "../../utils/enum.js";
-import { hashPassword } from "../../utils/crypto.js";
 
 const userSchema = new mongoose.Schema(
   {
@@ -15,6 +14,7 @@ const userSchema = new mongoose.Schema(
       trim: true,
       unique: true,
       lowercase: true,
+      index: true,
     },
     password: {
       type: String,
@@ -25,17 +25,18 @@ const userSchema = new mongoose.Schema(
       enum: Object.values(UserRole),
       default: UserRole.USER,
     },
-    isActive: { type: Boolean, default: true },
+    isActive: { type: Boolean, default: true, index: true },
+    refreshTokenHash: {
+      type: String,
+      select: false,
+    },
+    lastLoginAt: Date,
+    passwordChangedAt: Date,
   },
   { timestamps: true }
 );
 
-userSchema.pre("save", async function (next) {
-  if (!this.isModified("password")) return next();
-
-  this.password = await hashPassword(this.password);
-  next();
-});
+userSchema.index({ role: 1 });
 
 const User = mongoose.model("User", userSchema);
 export default User;

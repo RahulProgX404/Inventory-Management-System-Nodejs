@@ -1,6 +1,3 @@
-import { verifyJWT } from "../middlewares/jwt.middleware.js";
-import { authorize, requirePermission } from "../middlewares/role.middleware.js";
-
 // Helper utilities for permission generation and matching
 export const CRUD_ACTIONS = ["create", "read", "update", "delete"];
 
@@ -58,8 +55,19 @@ export function hasPermission(rolePerms = [], requiredPerm) {
  */
 export function enforceAuthorization(roles = [], perms = []) {
   return [
-    verifyJWT,
-    roles.length ? authorize(...roles) : (req, _, n) => n(),
-    perms.length ? requirePermission(...perms) : (req, _, n) => n(),
+    async (req, res, next) => {
+      const { verifyJWT } = await import("../middlewares/jwt.middleware.js");
+      return verifyJWT(req, res, next);
+    },
+    async (req, res, next) => {
+      if (!roles.length) return next();
+      const { authorize } = await import("../middlewares/role.middleware.js");
+      return authorize(...roles)(req, res, next);
+    },
+    async (req, res, next) => {
+      if (!perms.length) return next();
+      const { requirePermission } = await import("../middlewares/role.middleware.js");
+      return requirePermission(...perms)(req, res, next);
+    },
   ];
 }
