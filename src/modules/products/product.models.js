@@ -62,6 +62,13 @@ const productSchema = new mongoose.Schema(
   }
 );
 
+productSchema.index({ category: 1 });
+productSchema.index({ supplier: 1 });
+productSchema.index({ isActive: 1 });
+productSchema.index({ name: "text", sku: "text" });
+
+productSchema.index({ currentStock: 1, reorderLevel: 1 });
+
 const Product = mongoose.model("Product", productSchema);
 
 export default Product;
